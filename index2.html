@@ -132,13 +132,13 @@
 <body>
     <h1>Guess the Number!</h1>
     <p id="description">Guess a number between 1 and 10.</p>
-    <button onclick="playGame()" id="playButton">Play</button>
+    <button onclick="window.playGame()" id="playButton">Play</button>
     <div id="game" style="display: none;">
         <input type="number" id="userGuess" placeholder="Enter your guess" />
-        <button onclick="checkGuess()" id="checkGuess">Check Guess</button>
+        <button onclick="window.checkGuess()" id="checkGuess">Check Guess</button>
         <p id="result"></p>
         <p id="attemptsLeft"></p>
-        <button onclick="restartGame()" id="restartButton">Restart Game</button>
+        <button onclick="window.restartGame()" id="restartButton">Restart Game</button>
     </div>
 
     <script>
@@ -148,8 +148,10 @@
         let gameOver = false;
         let guessHistory = [];
 
-        console.log(randomNumber)
-        playGame = () => {
+        console.log(randomNumber);
+        
+        // Properly declare functions with const
+        const playGame = () => {
             document.getElementById('playButton').style.display = 'none';
             document.getElementById('description').style.display = 'none';
             document.getElementById('game').style.display = 'block';
@@ -157,7 +159,7 @@
             document.getElementById('userGuess').focus();
         };
 
-        restartGame = () => {
+        const restartGame = () => {
             attempts = 0;
             gameOver = false;
             guessHistory = [];
@@ -166,17 +168,16 @@
 
             document.getElementById('game').style.display = 'none';
             document.getElementById('result').innerText = '';
-            document.getElementById('result').style.color = '#f0f0f0'; // Reset color
+            document.getElementById('result').style.color = '#f0f0f0';
             document.getElementById('attemptsLeft').innerText = '';
             document.getElementById('userGuess').value = '';
             document.getElementById('checkGuess').style.display = 'block';
             
             document.getElementById('playButton').style.display = 'block';
             document.getElementById('description').style.display = 'block';
-
         };
 
-        checkGuess = () => {
+        const checkGuess = () => {
             if (gameOver) return;
 
             const userGuessInput = document.getElementById('userGuess');
@@ -204,14 +205,13 @@
             guessHistory.push(userGuess);
             attempts++;
             
-            // Reset styles before applying new ones
             const resultEl = document.getElementById('result');
             resultEl.style.fontWeight = '400';
             resultEl.style.fontSize = '1rem';
             resultEl.style.color = '#f0f0f0';
 
             if (userGuess === randomNumber) {
-                resultEl.style.color = '#48BB78'; // A nice green
+                resultEl.style.color = '#48BB78'; 
                 resultEl.style.fontWeight = '600';
                 resultEl.style.fontSize = '1.2rem';
                 resultEl.innerText = 'stanford university lo ethical hacking lo topper vi kadha nuv!';
@@ -234,7 +234,7 @@
              userGuessInput.focus();
         };
 
-        endGame = (message) => {
+        const endGame = (message) => {
             const resultEl = document.getElementById('result');
             resultEl.style.color = '#F56565'; 
             resultEl.style.fontWeight = '600';
@@ -242,9 +242,13 @@
             document.getElementById('attemptsLeft').innerText = `Attempts left: 0`;
             document.getElementById('checkGuess').style.display = 'none';
             gameOver = true;
-        }
+        };
+
+        // Update your onclick handlers in HTML to use window object
+        window.playGame = playGame;
+        window.restartGame = restartGame;
+        window.checkGuess = checkGuess;
         
-        // Allow pressing Enter to check guess
         document.getElementById('userGuess').addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
